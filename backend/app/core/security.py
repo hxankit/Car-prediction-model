@@ -14,8 +14,25 @@ def hash_password(password: str):
 def verify_password(plain, hashed):
     sha_hash = hashlib.sha256(plain.encode()).hexdigest()
     return pwd_context.verify(sha_hash, hashed)
-def create_token(data: dict):
+
+
+def create_token(data: dict, expires_delta: timedelta = None):
     to_encode = data.copy()
-    expire = datetime.utcnow() + timedelta(hours=24)
-    to_encode.update({"exp": expire})
+
+    expire = datetime.utcnow() + (expires_delta or timedelta(hours=24))
+    to_encode.update({
+        "exp": expire,
+        "iat": datetime.utcnow()  # issued at
+    })
+
     return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+
+from jose import JWTError
+
+def decode_token(token: str):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        return payload
+    except JWTError:
+        return None

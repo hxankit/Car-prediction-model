@@ -87,12 +87,3 @@ def predict_car_price(data):
         "predicted_price": round(float(prediction[0]), 2),
         "message":"The best price of your car"
     }
-
-# def delete_user_service(db:Session,email:str):
-#     user =db.query(User).filter(User.email==email).first
-#     if not user:
-#         return None
-#     db.delete(user)
-#     db.commit()
-#     db.refresh(user)
-#     return user

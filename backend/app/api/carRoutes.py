@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.schemas.car import CarCreate ,CarPredictInput
 from app.core.database import get_db
+from app.dependencies.Auth import get_current_user
 from app.controllers.carController import (
     createCar,
     get_car_controller,
@@ -11,8 +12,8 @@ from app.controllers.carController import (
 router = APIRouter(prefix="/car", tags=["Car"])
 
 
-@router.post("/register")
-def create(car: CarCreate, db: Session = Depends(get_db)):
+@router.post("/addcar")
+def create(car: CarCreate, db: Session = Depends(get_db), _= Depends(get_current_user) ):
     return createCar(db,car)
 
 @router.get("/{car_id}")

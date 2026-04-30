@@ -9,3 +9,6 @@ class User(Base):
     name = Column(String(100))
     email = Column(String(100), unique=True, index=True)
     password = Column(String(255))
+    role=Column(String(20), default="user")
+    isVerified=Column(String(20),default="notVerified")
+    verificationToken=Column(String(50))
